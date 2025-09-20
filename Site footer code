@@ -1,0 +1,460 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style id="playeah-style-tag"> 
+.fr-view em { color: inherit; } 
+.take .course-player, .take .course-player__course-navigation , .take .course-player__content  { background-color: transparent !important; } 
+.take { background-color: #ffffff; } 
+.take .course-player__left-drawer { background-color: #ffffff; }   
+
+.take .course-player__user-search .ember-power-select-trigger { 
+  background-color: #f8f8f8 !important; 
+  border-color: #f8f8f8 !important; 
+}   
+
+.take span[class*="_progress-ring__ring"] { background-color: #e4e4e4; } 
+.take .content-item__progress-icon:before{ border-color: #e4e4e4 !important; }   
+.take span[class*="_progress-ring__ring-inset"], 
+.take .content-item__progress-icon--circle\--active:after { background-color: #ffffff; }    
+
+.take .ui-state-active .course-player__chapter-item__container, 
+.take .course-player__chapter-item__header:hover .course-player__chapter-item__container{ border-bottom-color: #e4e4e4; }   
+
+.take .course-player__chapter-item__container{ border-bottom-color: #e4e4e4; }  
+
+.take .course-progress__container .course-progress__school-name { background-color: #FFFFFF; }   
+
+.take .course-player__chapter-item__completion, 
+.take h3[class*="_chapter-item__title"], 
+.take h2[class*="_chapter-item__title"], 
+.take a[class*="_content-item__link"],
+.take a[class*="_content-item__link"]:hover,
+.take a[class*="_content-item__link"]:active, 
+.take a[class*="_content-item__link"]:focus { 
+  color: #36394D;  
+  font-family: "Poppins", sans-serif !important;  
+}   
+
+.take .content-item__details, 
+.take .content-item__details i, 
+.take .active .content-item__details{ color: #7a7a7b; }  
+
+.take .course-player #content-inner { background-color: #f8f8f8; }  
+.take #content-inner .fr-view h1,
+.take #content-inner .fr-view h2,
+.take #content-inner .fr-view h3,
+.take #content-inner .fr-view h4 { 
+  color: #333333;  
+  font-family: "Poppins", sans-serif !important;  
+}  
+.take #content-inner .fr-view p, 
+.take #content-inner .fr-view ul, 
+.take #content-inner .fr-view ol { 
+  color: #333333;  
+  font-family: "Poppins", sans-serif !important;  
+}  
+.take .course-progress__title { 
+  color: #333333;  
+  font-family: "Poppins", sans-serif !important;  
+}  
+.take #course-player-footer { background-color: #f8f8f8; }          
+
+/* ===== Buttons ===== */
+.take .btn,
+.take .btn-primary,
+.take .btn-secondary,
+.take button {
+  border-radius: 20px !important;
+  height: 50px !important;
+  line-height: 50px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Primary button color */
+.take .btn-primary,
+.take button.btn-primary,
+.take button.brand-color {
+  background-color: #1E8CFA !important;
+  border-color: #1E8CFA !important;
+  color: #fff !important;
+}
+
+/* Special case: Incomplete / Continue buttons only */
+.take .btn--incomplete,
+.take .btn--continue,
+.take button.brand-color {
+  min-width: 160px !important;
+}
+
+/* Always show scrollbar in course player */
+.take {
+  overflow-y: scroll !important;          
+  scrollbar-gutter: stable both-edges;    
+}
+
+/* For WebKit browsers */
+.take ::-webkit-scrollbar { width: 10px; background: transparent; }
+.take ::-webkit-scrollbar-track { background: transparent; }
+.take ::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.take ::-webkit-scrollbar-thumb:hover { background-color: #333; }
+
+/* Light border for the course content header */
+.take .course-player__content-header._content-header__container_h7ytgy {
+  border-bottom: 1px solid #eaeaea !important;
+}
+
+/* Light border for the course player footer */
+.take #course-player-footer {
+  border-top: 1px solid #eaeaea !important;
+}
+
+/* Active content item link with brand color tint */
+.take .course-player__content-item__link._content-item__link_nffvg8.active.ember-view {
+  background-color: white !important;
+  color: #1E8CFA !important;
+  border-radius: 10px;
+}
+
+/* Force lesson content text to use Poppins */
+.take #content-inner .fr-view,
+.take #content-inner .fr-view p,
+.take #content-inner .fr-view span,
+.take #content-inner .fr-view li,
+.take #content-inner .fr-view div {
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+}
+
+/* Remove all shadows */
+.take *,
+.take *::before,
+.take *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Remove padding from lesson container */
+.take .course-player__lesson._course-player__lesson_n1vbpj {
+  padding: 0 !important;
+}
+ 
+/* Vertically center everything in the content header */
+.take .course-player__content-header._content-header__container_h7ytgy {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Light right border for the left drawer */
+.take .course-player__left-drawer._left-drawer_n1vbpj {
+  border-right: 1px solid #eaeaea !important;
+}
+
+/* Top-bar branding */
+.take .course-player__top-bar__branding._top-bar__branding_v3q4ce {
+  justify-content: flex-start !important;
+  margin-left: 0 !important;
+  padding-left: 12px !important;
+}
+.take .course-player__top-bar__branding._top-bar__branding_v3q4ce img,
+.take .course-player__top-bar__branding._top-bar__branding_v3q4ce svg {
+  height: 90px !important;
+  width: auto !important;
+}
+
+/* Progress bar container background */
+.take ._course-progress__progress-bar__container_1rtg53 {
+  background-color: #eaeaea !important;
+}
+
+/* Style each chapter item as a card */
+.take .course-player__chapters-item._chapters-item_1tqvoe {
+  background-color: #F6F6F6 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  margin: 12px 8px !important;
+  padding: 6px 12px !important;
+}
+
+/* Remove bottom border */
+.take .course-player__chapter-item__container._chapter-item__container_d57kmg {
+  border-bottom: none !important;
+}
+
+/* Completed lesson checkmark white */
+.take .course-player__content-item .toga-icon-checkmark::before {
+  color: #ffffff !important;
+}
+
+/* User search input */
+.take .course-player__user-search .ember-power-select-trigger {
+  background-color: white !important;
+  border: 1px solid #eaeaea !important;
+  border-radius: 12px !important;
+  height: 50px !important;
+  padding: 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Override H2 size */
+.take h2 {
+  font-size: 17px !important;
+  line-height: 1.3 !important;
+  font-weight: 700 !important;
+}
+
+/* Sidebar lesson titles */
+.take .content-item__title._content-item__title_nffvg8 {
+  font-size: 16px !important;
+  line-height: 1.7 !important;
+}
+
+/* Default lesson item */
+.take .course-player__content-item__link._content-item__link_nffvg8.ember-view {
+  border-radius: 10px !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Hover */
+.take .course-player__content-item__link._content-item__link_nffvg8.ember-view:hover {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  color: #36394D !important;
+}
+
+/* Active / selected */
+.take .course-player__content-item__link._content-item__link_nffvg8.active.ember-view {
+  background-color: rgba(30, 140, 250, 0.15) !important;
+  color: #1E8CFA !important;
+  border-radius: 10px !important;
+  font-weight: 800 !important;
+}
+
+/* Focus */
+.take .course-player__content-item__link._content-item__link_nffvg8.ember-view:focus {
+  outline: none !important;
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  color: #1E8CFA !important;
+}
+
+/* Round corners for small buttons */
+.take ._button--default_142a8m,
+.take ._button--link_142a8m {
+  border-radius: 16px !important;
+}
+
+/* Download file list items */
+.take .course-player__download-files__list-item._download-files__item_1j5gba {
+  background-color: #ffffff !important;
+  border: none !important;
+  border-radius: 20px !important;
+  padding: 16px 24px !important;
+  margin-bottom: 12px !important;
+  min-height: 45px;
+}
+
+/* Hide branding badge */
+.take .course-player__branding-badge._branding-badge_qlbigq {
+  display: none !important;
+}
+
+/* Add 40px top padding */
+#ember72 { padding-top: 40px !important; }
+
+/* Small brand-colored buttons */
+.take .brand-color__background.brand-color__dynamic-text._button--default--small_142a8m._button--icon-right--small_142a8m {
+  min-width: 180px !important;
+  font-size: 15px !important;
+  border-radius: 20px !important;
+  padding: 6px 14px !important;
+  color: white !important;
+  text-transform: capitalize !important;
+}
+
+/* Small ghost buttons */
+.take .brand-color__border-60-opacity._button--ghost--small_142a8m {
+  border: 2px solid currentColor !important;
+  color: #1E8CFA !important;
+  border-radius: 20px !important;
+  font-size: 15px !important;
+  padding: 6px 14px !important;
+  min-width: 180px !important;
+  text-transform: capitalize !important;
+}
+
+/* Force text color to white on brand background buttons */
+.take .brand-color__background.brand-color__dynamic-text._button--default_142a8m._button--icon-right_142a8m {
+  color: #ffffff !important;
+  win-width: 160px !important;
+}
+
+/* Top bar white */
+.course-player__top-bar.brand-color__background._top-bar_n1vbpj {
+  background-color: #fff !important;
+}
+
+/* מסתיר לגמרי את הלוגו ב־top bar */
+.take .course-player__top-bar__branding._top-bar__branding_v3q4ce {
+  display: none !important;
+}
+
+/* מחזיר קו עליון ל־top bar */
+.course-player__top-bar.brand-color__background._top-bar_n1vbpj {
+  
+  border-bottom: 1px solid #eaeaea !important; /* קו עדין */
+}
+
+/* קובע שתמיד הטקסט יהיה אפור */
+.take .top-bar__dashboard-link__anchor.brand-color__dynamic-text {
+  color: #7a7a7a !important; /* אפור ניטרלי */
+}
+
+/* גם ב-hover וב-focus */
+.take .top-bar__dashboard-link__anchor.brand-color__dynamic-text:hover,
+.take .top-bar__dashboard-link__anchor.brand-color__dynamic-text:focus {
+  color: #7a7a7a !important;
+}
+
+/* אייקון Go to Dashboard תמיד אפור */
+.take .top-bar__dashboard-link__icon.toga-icon.toga-icon-caret-stroke-left.brand-color__dynamic-text {
+  color: #7a7a7a !important;
+}
+
+/* גם במצבי hover/focus */
+.take .top-bar__dashboard-link__anchor.brand-color__dynamic-text:hover 
+  .top-bar__dashboard-link__icon.toga-icon.toga-icon-caret-stroke-left,
+.take .top-bar__dashboard-link__anchor.brand-color__dynamic-text:focus 
+  .top-bar__dashboard-link__icon.toga-icon.toga-icon-caret-stroke-left {
+  color: #7a7a7a !important;
+}
+
+body.sign-in.page .button.button-primary {
+  background-color: #1E8CFA !important; /* צבע כחול ברנד */
+  border-color: #1E8CFA !important;
+  color: #fff !important;
+
+  border-radius: 20px !important;
+  height: 50px !important;
+  line-height: 50px !important;
+  padding: 0 24px !important;
+  font-family: "Poppins", system-ui, sans-serif !important;
+  font-size: 16px !important;
+}
+
+._content-header__title-container_h7ytgy{
+    font-family: "Poppins", system-ui, sans-serif !important;
+}
+</style>
+
+
+<style>
+  /* עיצוב תגיות (Chip בהיר) */
+  .wb-tag {
+    background: transparent;       /* רקע אפור עדין */
+    color: #333;               /* טקסט שחור */
+    border: 1px solid #E0E0E0; /* קו דק סביב */
+    padding:8px 12px;
+    border-radius: 12px;       /* Chip מרובע־מעוגל */
+    font-size: 13px;
+    line-height: 1;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: .4px;
+  }
+
+  .wb-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .wb-tag:hover {
+    background: #E8E8E8;       /* רקע טיפה כהה בהובר */
+    border-color: #D8D8D8;
+  }
+</style>
+
+<script>
+(function(){
+  function toTitleCase(str){
+    return str.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+  }
+
+  function processContainer(root){
+    if (!root || root.dataset.wbTagsV2 === "1") return;
+
+    const tags = new Set();
+    const HASHTAG_RE = /(^|[\s(\[\{"'“”‘’«»])#([\p{L}\p{N}_-]+)(?=$|[\s).,;:!?/)\]"'“”‘’«»])/gu;
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node){
+        if (!node.nodeValue || !node.nodeValue.includes('#')) return NodeFilter.FILTER_SKIP;
+        const el = node.parentElement;
+        if (el.closest('a, code, pre, button, input, textarea, .wb-tags')) {
+          return NodeFilter.FILTER_REJECT;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    nodes.forEach(node=>{
+      const txt = node.nodeValue;
+      let last = 0, m, changed = false;
+      const frag = document.createDocumentFragment();
+
+      while ((m = HASHTAG_RE.exec(txt)) !== null) {
+        const before = txt.slice(last, m.index) + (m[1] || '');
+        if (before) frag.appendChild(document.createTextNode(before));
+        tags.add(m[2]);
+        last = m.index + m[0].length;
+        changed = true;
+      }
+      if (!changed) return;
+
+      if (last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+
+    if (tags.size){
+      const wrap = document.createElement('div');
+      wrap.className = 'wb-tags';
+      Array.from(tags).forEach(raw=>{
+        const human = toTitleCase(raw.replace(/[_-]+/g, ' ').trim());
+        const span = document.createElement('span');
+        span.className = 'wb-tag';
+        span.textContent = human;
+        wrap.appendChild(span);
+      });
+      root.appendChild(wrap);
+    }
+
+    root.dataset.wbTagsV2 = "1";
+  }
+
+  function run(){
+    document.querySelectorAll('.fr-view').forEach(el=>{
+      if (el.dataset.wbTagsV2 === "1") return;
+      if (el.textContent && el.textContent.includes('#')) processContainer(el);
+    });
+  }
+
+  run();
+  const mo = new MutationObserver(()=>run());
+  mo.observe(document.body, { childList:true, subtree:true });
+  window.addEventListener('popstate', ()=> setTimeout(run, 250));
+  window.addEventListener('hashchange', ()=> setTimeout(run, 250));
+})();
+</script>
