@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lesson</title>
+  <style>
+    body { margin:0; font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:#fff; color:#111; }
+    .wrap { max-width: 900px; margin:0 auto; padding:20px 16px 48px; }
+    .player { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow:hidden; margin-bottom:12px; }
+    iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .content { text-align:left; }
+    h1#title { font-size: clamp(20px, 2.6vw, 26px); font-weight:600; margin:0 0 6px; line-height:1.2; color:#111; }
+    .desc { font-size: 15px; line-height:1.4; color:#222; margin:0 0 6px; }
+    .features { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
+    .features span { background:#000; color:#fff; font-size: 13px; padding:3px 10px; border-radius:20px; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="player" id="playerBox">
+      <iframe id="riveFrame" allow="autoplay; fullscreen" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="content">
+      <h1 id="title" class="hidden"></h1>
+      <div class="desc hidden" id="desc"></div>
+      <div class="features hidden" id="features"></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const escapeHTML = (s) => s
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#39;");
+
+      // New fallback Rive from user
+      const riveDefault = "https://rive.app/s/omk_AJhRcUedVLwa8wx0dw/embed?runtime=rive-renderer";
+      const rive = params.get("rive") || riveDefault;
+      document.getElementById("riveFrame").src = rive;
+
+      // Optional custom gap between player and text
+      const gap = parseInt(params.get("gap") || "12", 10);
+      document.getElementById("playerBox").style.marginBottom = (isNaN(gap)?12:gap) + "px";
+
+      const title = params.get("title") || "";
+      const descRaw = params.get("desc") || "";
+      const featuresRaw = params.get("features") || "";
+
+      if(title.trim()){
+        document.title = escapeHTML(title);
+        const el = document.getElementById("title");
+        el.innerText = title;
+        el.classList.remove("hidden");
+      }
+
+      if(descRaw.trim()){
+        const el = document.getElementById("desc");
+        el.innerHTML = escapeHTML(descRaw).replace(/\\n/g,"<br/>");
+        el.classList.remove("hidden");
+      }
+
+      if(featuresRaw.trim()){
+        const el = document.getElementById("features");
+        const items = featuresRaw.split(/,|\\n/).map(i => i.trim()).filter(i => i.length);
+        el.innerHTML = items.map(i => `<span>${escapeHTML(i)}</span>`).join(" ");
+        el.classList.remove("hidden");
+      }
+    })();
+  </script>
+</body>
+</html>
