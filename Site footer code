@@ -382,25 +382,42 @@ body.sign-in.page .button.button-primary {
     background: #E8E8E8;       /* רקע טיפה כהה בהובר */
     border-color: #D8D8D8;
   }
+  
 </style>
 
 <script>
 (function(){
-  function toTitleCase(str){
-    return str.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+  // "cubic_mode" -> "Cubic Mode"
+  function humanize(raw){
+    return raw.replace(/[_-]+/g,' ')
+              .replace(/\w\S*/g, w => w[0].toUpperCase() + w.slice(1).toLowerCase())
+              .trim();
+  }
+  function nextMeaningful(n){
+    let cur = n;
+    while (cur && (
+      (cur.nodeType === 3 && /^\s*$/.test(cur.nodeValue)) ||
+      (cur.nodeType === 1 && cur.tagName === 'BR')
+    )) cur = cur.nextSibling;
+    return cur;
+  }
+  function firstTextIn(el){
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    return w.nextNode();
   }
 
-  function processContainer(root){
-    if (!root || root.dataset.wbTagsV2 === "1") return;
+  // חילוץ האשטאגים + פעולות ניקוי (עדיין לא מיישמים)
+  function extract(root){
+    const actions = [];
+    const seen = new Set();
+    const found = new Map(); // key = humanized lower, val = raw
 
-    const tags = new Set();
-    const HASHTAG_RE = /(^|[\s(\[\{"'“”‘’«»])#([\p{L}\p{N}_-]+)(?=$|[\s).,;:!?/)\]"'“”‘’«»])/gu;
-
+    // 1) מקרים רגילים (אותו צומת טקסט)
+    const RE = /(^|[\s(\[\{"'“”‘’«»])#([\p{L}\p{N}_-]+)(?=$|[\s).,;:!?/)\]"'“”‘’«»])/gu;
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode(node){
-        if (!node.nodeValue || !node.nodeValue.includes('#')) return NodeFilter.FILTER_SKIP;
-        const el = node.parentElement;
-        if (el.closest('a, code, pre, button, input, textarea, .wb-tags')) {
+        if (!node.nodeValue || node.nodeValue.indexOf('#') === -1) return NodeFilter.FILTER_SKIP;
+        if (node.parentElement && node.parentElement.closest('a,code,pre,button,input,textarea,.wb-tags')) {
           return NodeFilter.FILTER_REJECT;
         }
         return NodeFilter.FILTER_ACCEPT;
@@ -413,48 +430,90 @@ body.sign-in.page .button.button-primary {
     nodes.forEach(node=>{
       const txt = node.nodeValue;
       let last = 0, m, changed = false;
-      const frag = document.createDocumentFragment();
-
-      while ((m = HASHTAG_RE.exec(txt)) !== null) {
-        const before = txt.slice(last, m.index) + (m[1] || '');
-        if (before) frag.appendChild(document.createTextNode(before));
-        tags.add(m[2]);
+      const parts = [];
+      while ((m = RE.exec(txt)) !== null) {
+        parts.push(txt.slice(last, m.index) + (m[1] || ''));
+        const raw = m[2], key = humanize(raw).toLowerCase();
+        if (!seen.has(key)) { seen.add(key); found.set(key, raw); }
         last = m.index + m[0].length;
         changed = true;
       }
-      if (!changed) return;
-
-      if (last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
-      node.parentNode.replaceChild(frag, node);
+      if (changed){
+        parts.push(txt.slice(last));
+        const newText = parts.join('');
+        actions.push(()=>{ node.nodeValue = newText; });
+      }
     });
 
-    if (tags.size){
-      const wrap = document.createElement('div');
-      wrap.className = 'wb-tags';
-      Array.from(tags).forEach(raw=>{
-        const human = toTitleCase(raw.replace(/[_-]+/g, ' ').trim());
-        const span = document.createElement('span');
-        span.className = 'wb-tag';
-        span.textContent = human;
-        wrap.appendChild(span);
-      });
-      root.appendChild(wrap);
-    }
+    // 2) מקרים מפוצלים: ... "#" ואז אלמנט inline/טקסט שמתחיל במילה
+    root.querySelectorAll('em,span,strong,b,i,u,mark,small').forEach(el=>{
+      const prev = el.previousSibling;
+      if (!prev || prev.nodeType !== 3 || !/#$/.test(prev.nodeValue)) return;
 
-    root.dataset.wbTagsV2 = "1";
+      let t = firstTextIn(el);
+      if (!t){
+        const n = nextMeaningful(el);
+        if (n && n.nodeType === 3) t = n;
+      }
+      if (!t) return;
+
+      const mm = (t.nodeValue || '').match(/^([\p{L}\p{N}_-]+)/u);
+      if (!mm) return;
+
+      const raw = mm[1], key = humanize(raw).toLowerCase();
+      if (!seen.has(key)) { seen.add(key); found.set(key, raw); }
+
+      actions.push(()=>{ prev.nodeValue = prev.nodeValue.replace(/#$/, ''); });
+      actions.push(()=>{ t.nodeValue = t.nodeValue.replace(/^([\p{L}\p{N}_-]+)/u, ''); });
+      actions.push(()=>{ if (!el.textContent || !el.textContent.trim()) el.remove(); });
+    });
+
+    return { actions, tags: Array.from(found.values()) };
+  }
+
+  function process(root){
+    if (!root) return;
+
+    // אם אין '#', לא נוגעים (וגם לא מוחקים chips קיימים)
+    const rawText = (root.cloneNode(true).textContent || '');
+    if (rawText.indexOf('#') === -1) return;
+
+    const { actions, tags } = extract(root);
+    if (!tags.length) return;
+
+    // ננקה chips קיימים של אותו בלוק ורק אז ניישם
+    root.querySelectorAll(':scope > .wb-tags').forEach(n => n.remove());
+    actions.forEach(fn => fn());
+
+    // בונים chips ייחודיים
+    const box = document.createElement('div');
+    box.className = 'wb-tags';
+    const uniq = Array.from(new Map(tags.map(r => [humanize(r).toLowerCase(), r])).values());
+    uniq.forEach(raw=>{
+      const chip = document.createElement('span');
+      chip.className = 'wb-tag';
+      chip.textContent = humanize(raw);
+      box.appendChild(chip);
+    });
+    root.appendChild(box);
   }
 
   function run(){
-    document.querySelectorAll('.fr-view').forEach(el=>{
-      if (el.dataset.wbTagsV2 === "1") return;
-      if (el.textContent && el.textContent.includes('#')) processContainer(el);
-    });
+    document.querySelectorAll('#content-inner .fr-view, .fr-view').forEach(process);
   }
 
+  // ⬇️ הרצה מיידית כדי למנוע פלאש
   run();
-  const mo = new MutationObserver(()=>run());
+
+  // ⬇️ עדכוני SPA: פריים הבא (מינימום דיליי, בלי setTimeout)
+  let raf = null;
+  function schedule(){
+    if (raf !== null) return;
+    raf = requestAnimationFrame(()=>{ raf = null; run(); });
+  }
+  const mo = new MutationObserver(schedule);
   mo.observe(document.body, { childList:true, subtree:true });
-  window.addEventListener('popstate', ()=> setTimeout(run, 250));
-  window.addEventListener('hashchange', ()=> setTimeout(run, 250));
+  window.addEventListener('popstate', schedule);
+  window.addEventListener('hashchange', schedule);
 })();
 </script>
